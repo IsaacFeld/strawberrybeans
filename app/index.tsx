@@ -1,7 +1,15 @@
-import { StyleSheet, Text, View, Image, TextInput } from "react-native";
+import { StyleSheet, Text, View, Image, TextInput, Button, Pressable } from "react-native";
 import { Colors } from "./constants/Colors";
 import { useState } from "react";
+import { Int32 } from "react-native/Libraries/Types/CodegenTypes";
+
 export default function Index() {
+  const [minmA, setMinmA] = useState('')
+  const [maxmA, setMaxmA] = useState('')
+  const [minPPM, setMinPPM] = useState('')
+  const [maxPPM, setMaxPPM] = useState('')
+  const [checkCurrent, setCheckCurrent] = useState('')
+  const [checkPPM, setcheckPPM] = useState('')
   return (
     <View
       style={{
@@ -20,12 +28,83 @@ export default function Index() {
         
         <View style={styles.calcInnerBox}>
         <Text style={styles.titleText}>Enter your Values below!</Text>
-        <View style={styles.centerGraphic}></View>
-        <View style={styles.inputBox}>
-        <TextInput placeholder="Number"style={styles.textBox} onChangeText={newText => console.log(newText)}></TextInput>
-        <TextInput placeholder="Number2"style={styles.textBox}></TextInput>
+        <View style={styles.centerGraphic}>
+          <Text style={styles.titleText}>Results</Text>
+          <View style={
+            {
+              flex: styles.row.flex,
+              flexDirection: styles.row.flexDirection,
+              marginTop: 35,
+              columnGap: 10,
+              justifyContent: "center",
+            }
+          }>
+          <View style={styles.col}>
+            <Text style={styles.resultBoxTitle}>Check PPM</Text>
+            <Text style={styles.resultBox}>{checkPPM}</Text>
+          </View>
+
+          </View>
         </View>
-  
+        <View style={styles.inputBox}>
+          <View style={{
+            flex: styles.row.flex,
+            flexDirection: styles.row.flexDirection,
+            columnGap: 20,
+          }}>
+            <View style={styles.col}>
+              <Text style={styles.inputBoxTitle}> Min Ma</Text>
+              <TextInput placeholder="mA"style={styles.textBox} onChangeText={text => setMinmA(text)}></TextInput>
+            </View>
+            <View style={styles.col}>
+              <Text style={styles.inputBoxTitle}> Max Ma</Text>
+              <TextInput placeholder="mA"style={styles.textBox} onChangeText={text => setMaxmA(text)}></TextInput>
+            </View>
+          </View>
+          <View style={{
+            flex: styles.row.flex,
+            flexDirection: styles.row.flexDirection,
+            columnGap: 20,
+          }}>
+            <View style={styles.col}>
+              <Text style={styles.inputBoxTitle}> Min ppm</Text>
+              <TextInput placeholder="ppm"style={styles.textBox} onChangeText={text => setMinPPM(text)}></TextInput>
+            </View>
+            <View style={styles.col}>
+              <Text style={styles.inputBoxTitle}> Max ppm</Text>
+              <TextInput placeholder="ppm"style={styles.textBox} onChangeText={text => setMaxPPM(text)}></TextInput>
+            </View>
+          </View>
+          <View style={{
+            flex: styles.row.flex,
+            flexDirection: styles.row.flexDirection,
+            columnGap: 20,
+          }}>
+            <View style={styles.col}>
+              <Text style={styles.inputBoxTitle}> Check Current </Text>
+              <TextInput placeholder="Current"style={styles.textBox} onChangeText={text => setCheckCurrent(text)}></TextInput>
+            </View>
+          </View>
+
+        </View>
+        <View style={styles.calcButtonBox}>
+          <Pressable 
+          onPress={() => {
+            setcheckPPM(calculate(minmA, maxmA, maxPPM, minPPM, checkCurrent));
+          }}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? '#2f299e' : '#2f27ce',
+              transform: pressed ? 'translateY(-1px)' : 'translateY(0)'
+            },
+            styles.calcButton
+          ]}>
+          {({pressed}) => (
+            <Text style={styles.calcButtonText}>{pressed ? 'Calculating!' : 'Calculate'}</Text>
+          )}
+            
+          </Pressable>
+        </View>
         </View>
       </View>
     </View>
@@ -70,12 +149,15 @@ const styles = StyleSheet.create({
   row: {
     flex: 0,
     flexDirection: "row",
+  
   },
   col: {
     flex: 0,
     flexDirection: "column",
+
   },
   textBox: {
+    
     padding: 10,
     borderRadius: 10,
     borderStyle: "solid",
@@ -87,21 +169,90 @@ const styles = StyleSheet.create({
     backgroundColor: "#abcc"
   },
   centerGraphic: {
+    flex: 0,
+    flexDirection: "column",
     marginTop: 20,
     width: "100%",
-    height: "60%",
-    backgroundColor: "#ace4",
+    height: "40%",
+    backgroundColor: "#fbfbfe",
+    textAlign: "center",
   },
   inputBox: {
     marginTop: 20,
     flex: 0,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     alignSelf: "center",
     width: "90%",
-    height: "20%",
+    height: "40%",
     borderRadius: 15,
     backgroundColor: "#efefef"
+  },
+  resultBox: {
+    textAlign:"center",
+    padding: 10,
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: "#005679",
+    borderWidth: 1,
+    margin: "auto",
+    width: 130,
+    height: 40,
+    backgroundColor: "#abcc"
+    
+  },
+  inputBoxTitle: {
+    marginTop: 10,
+    marginBottom: 1,
+  },
+  resultBoxTitle: {
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  calcButton: {
+    borderWidth: 1,
+    borderColor: "#dedcff",
+    padding: 4,
+    width: 160,
+    height: 40,
+    color: "#fdfdfd",
+    borderRadius: 15,
+  },
+  calcButtonBox: {
+    marginTop: 30,
+    height: 60,
+    borderRadius: 10,
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  calcButtonText: {
+    color: "#ffffff",
+    alignSelf: "center",
+    marginTop: 3,
   }
 
 })
+function calculate(mmA: string, mxmA: string, mxP: string, mP: string, curr: string){
+  console.log({"mmA": mmA, "mxmA": mxmA, "mP": mP, "mxP": mxP, "curr": curr})
+  try{
+
+  
+  var value1 = parseInt(mxP) - parseInt(mP)
+  var value2 = parseInt(mxmA) - parseInt(mmA)
+  var quotient = value1 / value2
+  var value3 = (-1 * quotient) * parseInt(mmA)
+    if(isNaN((quotient * parseInt(curr)) + value3)){
+      return "Error";
+    }
+    else{
+      return ((quotient * parseInt(curr)) + value3).toString();
+    }
+
+  }
+  catch{
+    return "Error";
+  }
+
+}

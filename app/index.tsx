@@ -20,7 +20,7 @@ export default function Index() {
 }}>     <View style={styles.row}>
         <Image source={require('../assets/images/function.png')}></Image>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Joshi's Calculator</Text>
+          <Text style={styles.titleText}>Analog Output</Text>
           <Text style={styles.genericText}>developed by Isaac 😎</Text>
         </View>
       </View>

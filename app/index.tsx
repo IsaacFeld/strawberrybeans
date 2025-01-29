@@ -11,21 +11,15 @@ export default function Index() {
   const [checkCurrent, setCheckCurrent] = useState('')
   const [checkPPM, setcheckPPM] = useState('')
   return (
-    <View
-      style={{
-        flex: 0,
-        flexDirection: "column",
-        backgroundColor: "#fefefe",
-
-}}>     <View style={styles.row}>
+    <View style={{flex: 0, flexDirection: "column", backgroundColor: "#fefefe",}}>     
+    <View style={styles.row}>
         <Image source={require('../assets/images/function.png')}></Image>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Analog Output</Text>
+          <Text style={styles.titleText}>Analog Output Calculator</Text>
           <Text style={styles.genericText}>developed by Isaac 😎</Text>
         </View>
       </View>
       <View style={styles.calcBox}>
-        
         <View style={styles.calcInnerBox}>
         <Text style={styles.titleText}>Enter your Values below!</Text>
         <View style={styles.centerGraphic}>
@@ -53,11 +47,11 @@ export default function Index() {
             columnGap: 20,
           }}>
             <View style={styles.col}>
-              <Text style={styles.inputBoxTitle}> Min Ma</Text>
+              <Text style={styles.inputBoxTitle}> Min mA</Text>
               <TextInput placeholder="mA"style={styles.textBox} onChangeText={text => setMinmA(text)}></TextInput>
             </View>
             <View style={styles.col}>
-              <Text style={styles.inputBoxTitle}> Max Ma</Text>
+              <Text style={styles.inputBoxTitle}> Max mA</Text>
               <TextInput placeholder="mA"style={styles.textBox} onChangeText={text => setMaxmA(text)}></TextInput>
             </View>
           </View>
@@ -235,7 +229,6 @@ const styles = StyleSheet.create({
 
 })
 function calculate(mmA: string, mxmA: string, mxP: string, mP: string, curr: string){
-  console.log({"mmA": mmA, "mxmA": mxmA, "mP": mP, "mxP": mxP, "curr": curr})
   try{
 
   
